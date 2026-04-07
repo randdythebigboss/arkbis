@@ -2,9 +2,1452 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Markbis Multiservice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markbis Multiservice, S.R.L.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            --orange: #d4521a;
+            --blue: #2a9fd6;
+            --dark: #1a1a1a;
+            --ink: #090c0f;
+            --surface: #f3f4f6;
+            --border: #e4e5ea;
+            --border-dark: rgba(255,255,255,0.07);
+            --muted: #6b7280;
+            --white: #ffffff;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--dark);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ══ NAVBAR ══ */
+        nav {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 300;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            background: rgba(9,12,15,0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .nav-brand {
+            display: flex; align-items: center;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .brand-mark em { font-style: normal; color: var(--orange); }
+
+        .brand-sep {
+            width: 1px; height: 16px;
+            background: rgba(255,255,255,0.18);
+            margin: 0 12px;
+        }
+
+        .brand-sub {
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+        }
+
+        .nav-right {
+            display: flex; align-items: center; gap: 44px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex; gap: 36px; align-items: center;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.5);
+            font-weight: 500;
+            font-size: 0.82rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        nav ul li a:hover { color: var(--white); }
+
+        .lang-toggle {
+            display: flex; align-items: center;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-dark);
+            border-radius: 20px;
+            padding: 3px; gap: 2px;
+        }
+
+        .lang-btn {
+            background: none; border: none;
+            cursor: pointer; font-family: inherit;
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.08em;
+            padding: 5px 12px; border-radius: 16px;
+            color: rgba(255,255,255,0.3);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .lang-btn.active { background: var(--orange); color: var(--white); }
+
+        .hamburger {
+            display: none; flex-direction: column;
+            justify-content: center; gap: 5px;
+            width: 36px; height: 36px;
+            cursor: pointer; background: none; border: none;
+        }
+
+        .hamburger span {
+            display: block; height: 1.5px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 68px; inset-inline: 0;
+            background: rgba(9,12,15,0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-dark);
+            z-index: 299;
+            padding: 28px 32px 36px;
+            flex-direction: column; gap: 4px;
+        }
+
+        .mobile-menu.open { display: flex; }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.65);
+            font-weight: 600; font-size: 0.95rem;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-dark);
+            transition: color 0.2s;
+        }
+
+        .mobile-menu a:hover { color: var(--white); }
+
+        .mobile-lang {
+            display: flex; gap: 10px; margin-top: 20px;
+        }
+
+        .mobile-lang .lang-btn {
+            flex: 1; padding: 11px; font-size: 0.82rem;
+            text-align: center;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .mobile-lang .lang-btn.active {
+            background: var(--orange); color: var(--white);
+            border-color: var(--orange);
+        }
+
+        /* ══ HERO ══ */
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            padding: 130px 24px 100px;
+            background: var(--ink);
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+            background-size: 64px 64px;
+            pointer-events: none;
+        }
+
+        .hero-glow-b {
+            position: absolute;
+            top: -150px; right: -150px;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(42,159,214,0.15) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .hero-glow-o {
+            position: absolute;
+            bottom: -120px; left: -120px;
+            width: 650px; height: 650px;
+            background: radial-gradient(circle, rgba(212,82,26,0.13) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .hero-line {
+            position: absolute; top: 0; right: 18%;
+            width: 1px; height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(42,159,214,0.2) 30%, rgba(212,82,26,0.15) 70%, transparent);
+            pointer-events: none;
+        }
+
+        .hero-line2 {
+            position: absolute; top: 0; left: 22%;
+            width: 1px; height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.04) 40%, transparent);
+            pointer-events: none;
+        }
+
+        .hero-bracket-tl {
+            position: absolute; top: 108px; left: 60px;
+            width: 44px; height: 44px;
+            border-top: 1.5px solid rgba(42,159,214,0.3);
+            border-left: 1.5px solid rgba(42,159,214,0.3);
+            pointer-events: none;
+        }
+
+        .hero-bracket-br {
+            position: absolute; bottom: 60px; right: 60px;
+            width: 44px; height: 44px;
+            border-bottom: 1.5px solid rgba(212,82,26,0.3);
+            border-right: 1.5px solid rgba(212,82,26,0.3);
+            pointer-events: none;
+        }
+
+        .hero-dots {
+            position: absolute; bottom: 110px; left: 60px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 7px;
+            pointer-events: none;
+        }
+
+        .hero-dots span {
+            display: block; width: 2px; height: 2px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .hero-inner { position: relative; z-index: 2; max-width: 840px; }
+
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.09);
+            color: rgba(255,255,255,0.45);
+            font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            padding: 7px 18px 7px 12px;
+            border-radius: 30px; margin-bottom: 36px;
+        }
+
+        .tag-dot {
+            width: 6px; height: 6px;
+            background: var(--orange); border-radius: 50%;
+            animation: blink 2.2s infinite;
+        }
+
+        @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.2} }
+
+        .hero-h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.6rem, 6vw, 4.8rem);
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.04;
+            letter-spacing: -0.03em;
+            margin-bottom: 28px;
+        }
+
+        .hero-h1 .accent { color: var(--orange); }
+
+        .hero-divider {
+            width: 48px; height: 2px;
+            background: linear-gradient(90deg, var(--orange), var(--blue));
+            margin: 0 auto 28px;
+            border-radius: 2px;
+        }
+
+        .hero-sub {
+            font-size: clamp(0.92rem, 1.6vw, 1.08rem);
+            color: rgba(255,255,255,0.48);
+            max-width: 480px; margin: 0 auto 48px;
+            line-height: 1.82; font-weight: 400;
+        }
+
+        .hero-ctas {
+            display: flex; flex-wrap: wrap;
+            gap: 14px; justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--orange); color: var(--white);
+            padding: 15px 36px; border-radius: 6px;
+            font-weight: 700; font-size: 0.85rem;
+            text-decoration: none;
+            letter-spacing: 0.07em; text-transform: uppercase;
+            transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+            box-shadow: 0 0 30px rgba(212,82,26,0.38);
+        }
+
+        .btn-primary:hover {
+            background: #bf4a16;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 40px rgba(212,82,26,0.58);
+        }
+
+        .btn-wa {
+            display: inline-flex; align-items: center; gap: 9px;
+            background: rgba(37,211,102,0.1);
+            border: 1px solid rgba(37,211,102,0.28);
+            color: #4ade80;
+            padding: 14px 28px; border-radius: 6px;
+            font-weight: 600; font-size: 0.85rem;
+            text-decoration: none;
+            letter-spacing: 0.07em; text-transform: uppercase;
+            transition: background 0.2s, border-color 0.2s, transform 0.18s;
+        }
+
+        .btn-wa:hover {
+            background: rgba(37,211,102,0.18);
+            border-color: rgba(37,211,102,0.45);
+            transform: translateY(-2px);
+        }
+
+        .btn-wa svg { width: 16px; height: 16px; fill: #4ade80; }
+
+        .btn-ghost {
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.45);
+            padding: 14px 26px; border-radius: 6px;
+            font-weight: 600; font-size: 0.85rem;
+            text-decoration: none;
+            letter-spacing: 0.07em; text-transform: uppercase;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+
+        .btn-ghost:hover {
+            border-color: rgba(255,255,255,0.28);
+            color: var(--white);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .hero-trust {
+            display: inline-flex; align-items: center; gap: 10px;
+            color: rgba(255,255,255,0.22);
+            font-size: 0.72rem; letter-spacing: 0.05em;
+        }
+
+        .ht-sep { width: 28px; height: 1px; background: rgba(255,255,255,0.14); }
+
+        /* ══ TRUST STRIP ══ */
+        #trust-strip {
+            background: #0b0e11;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .trust-inner {
+            max-width: 1160px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(3,1fr);
+        }
+
+        .trust-item {
+            display: flex; align-items: center; gap: 16px;
+            padding: 30px 40px;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.25s;
+        }
+
+        .trust-item:last-child { border-right: none; }
+        .trust-item:hover { background: rgba(255,255,255,0.02); }
+
+        .t-icon {
+            width: 40px; height: 40px;
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .t-icon.or { background: rgba(212,82,26,0.12); }
+        .t-icon.bl { background: rgba(42,159,214,0.1); }
+        .t-icon svg { width: 19px; height: 19px; }
+
+        .t-text strong {
+            display: block; color: var(--white);
+            font-size: 0.88rem; font-weight: 700;
+            margin-bottom: 3px; letter-spacing: 0.01em;
+        }
+
+        .t-text span {
+            font-size: 0.76rem;
+            color: rgba(255,255,255,0.33);
+        }
+
+        /* ══ COMMON SECTION ══ */
+        .wrap { max-width: 1160px; margin: 0 auto; padding: 96px 56px; }
+
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--orange); margin-bottom: 16px;
+        }
+
+        .eyebrow::before {
+            content: '';
+            display: block; width: 18px; height: 1.5px;
+            background: var(--orange); border-radius: 2px;
+        }
+
+        .eyebrow.bl { color: var(--blue); }
+        .eyebrow.bl::before { background: var(--blue); }
+        .eyebrow.dim { color: rgba(255,255,255,0.28); }
+        .eyebrow.dim::before { background: rgba(255,255,255,0.18); }
+
+        .sec-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: -0.025em; line-height: 1.1;
+            margin-bottom: 18px;
+        }
+
+        .sec-sub {
+            font-size: 0.97rem; line-height: 1.8;
+            color: var(--muted); max-width: 540px;
+        }
+
+        /* ══ SERVICES ══ */
+        #services { background: var(--surface); }
+
+        .svc-head { text-align: center; margin-bottom: 72px; }
+        .svc-head .eyebrow { justify-content: center; }
+        .svc-head .sec-sub { margin: 0 auto; }
+
+        .svc-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 20px;
+        }
+
+        .svc-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 36px 26px 32px;
+            position: relative; overflow: hidden;
+            transition: transform 0.28s cubic-bezier(.22,.61,.36,1), box-shadow 0.28s, border-color 0.28s;
+        }
+
+        .svc-card::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 2.5px;
+            background: linear-gradient(90deg, var(--orange), var(--blue));
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.35s cubic-bezier(.22,.61,.36,1);
+        }
+
+        .svc-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 52px rgba(0,0,0,0.1);
+            border-color: rgba(0,0,0,0.04);
+        }
+
+        .svc-card:hover::after { transform: scaleX(1); }
+
+        .svc-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.62rem; font-weight: 700;
+            letter-spacing: 0.12em; color: rgba(0,0,0,0.13);
+            margin-bottom: 18px;
+        }
+
+        .svc-icon {
+            width: 50px; height: 50px; border-radius: 12px;
+            background: var(--dark);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+            transition: box-shadow 0.28s;
+        }
+
+        .svc-card:hover .svc-icon { box-shadow: 0 6px 22px rgba(0,0,0,0.28); }
+        .svc-icon svg { width: 23px; height: 23px; }
+
+        .svc-card h3 {
+            font-size: 0.97rem; font-weight: 700;
+            color: var(--dark); margin-bottom: 9px;
+            letter-spacing: -0.01em;
+        }
+
+        .svc-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+        /* ══ WHY ══ */
+        #why {
+            background: var(--ink);
+            position: relative; overflow: hidden;
+        }
+
+        #why::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.017) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.017) 1px, transparent 1px);
+            background-size: 56px 56px;
+            pointer-events: none;
+        }
+
+        .why-glow {
+            position: absolute; top: -200px; right: -200px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(42,159,214,0.1) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .why-head { text-align: center; margin-bottom: 72px; position: relative; z-index: 1; }
+        .why-head .eyebrow { justify-content: center; }
+        .why-head .sec-title { color: var(--white); }
+        .why-head .sec-sub { color: rgba(255,255,255,0.38); margin: 0 auto; }
+
+        .why-grid {
+            display: grid; grid-template-columns: repeat(4,1fr);
+            gap: 18px; position: relative; z-index: 1;
+        }
+
+        .why-card {
+            border: 1px solid var(--border-dark);
+            border-radius: 10px; padding: 34px 26px;
+            background: rgba(255,255,255,0.02);
+            transition: background 0.28s, border-color 0.28s, transform 0.28s;
+        }
+
+        .why-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.11);
+            transform: translateY(-4px);
+        }
+
+        .why-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.2rem; font-weight: 700;
+            letter-spacing: -0.04em;
+            color: rgba(255,255,255,0.05);
+            line-height: 1; margin-bottom: 22px;
+        }
+
+        .why-icon {
+            width: 42px; height: 42px; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .why-icon.or { background: rgba(212,82,26,0.14); }
+        .why-icon.bl { background: rgba(42,159,214,0.1); }
+        .why-icon svg { width: 21px; height: 21px; }
+
+        .why-card h3 {
+            font-size: 0.95rem; font-weight: 700;
+            color: var(--white); margin-bottom: 9px;
+            letter-spacing: -0.01em;
+        }
+
+        .why-card p { font-size: 0.83rem; color: rgba(255,255,255,0.36); line-height: 1.75; }
+
+        /* ══ ABOUT ══ */
+        #about-section { background: var(--white); }
+
+        .about-inner { display: flex; gap: 88px; align-items: center; }
+        .about-text { flex: 1; min-width: 0; }
+        .about-text .sec-sub { margin-top: 20px; }
+
+        .body2 {
+            font-size: 0.93rem; line-height: 1.82;
+            color: var(--muted); margin-top: 13px;
+        }
+
+        .about-ceo {
+            display: inline-flex; align-items: center; gap: 14px;
+            margin-top: 34px; padding: 15px 20px;
+            background: var(--surface);
+            border-left: 2px solid var(--orange);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .ceo-av {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--dark);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ceo-av svg { width: 17px; height: 17px; stroke: rgba(255,255,255,0.65); }
+
+        .ceo-info strong {
+            display: block; font-size: 0.88rem; font-weight: 700;
+            color: var(--dark); margin-bottom: 2px;
+        }
+
+        .ceo-info span { font-size: 0.74rem; color: var(--muted); }
+
+        .about-stats {
+            flex: 0 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+        }
+
+        .stat-box {
+            background: var(--dark); border-radius: 10px;
+            padding: 28px 22px; text-align: center; min-width: 126px;
+            position: relative; overflow: hidden;
+            transition: transform 0.25s;
+        }
+
+        .stat-box:hover { transform: translateY(-3px); }
+
+        .stat-box::before {
+            content: '';
+            position: absolute; top: 0; inset-inline: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--orange), var(--blue));
+            opacity: 0; transition: opacity 0.25s;
+        }
+
+        .stat-box:hover::before { opacity: 1; }
+
+        .stat-box .num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem; font-weight: 700;
+            color: var(--orange); display: block;
+            letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px;
+        }
+
+        .stat-box .lbl {
+            font-size: 0.74rem;
+            color: rgba(255,255,255,0.42);
+            line-height: 1.5; font-weight: 500;
+        }
+
+        /* ══ CONTACT ══ */
+        #contact {
+            background: #090b0e;
+            position: relative; overflow: hidden;
+        }
+
+        #contact::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.014) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.014) 1px, transparent 1px);
+            background-size: 56px 56px;
+            pointer-events: none;
+        }
+
+        .c-glow {
+            position: absolute; bottom: -150px; left: -100px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(212,82,26,0.09) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .c-head {
+            display: flex; align-items: flex-end;
+            justify-content: space-between; gap: 32px;
+            margin-bottom: 56px; flex-wrap: wrap;
+            position: relative; z-index: 1;
+        }
+
+        .c-head .sec-title { color: var(--white); }
+        .c-head .sec-sub { color: rgba(255,255,255,0.38); }
+
+        .c-grid {
+            display: grid; grid-template-columns: repeat(3,1fr);
+            gap: 18px; position: relative; z-index: 1;
+        }
+
+        .c-card {
+            padding: 30px 26px;
+            border: 1px solid var(--border-dark);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.025);
+            display: flex; align-items: flex-start; gap: 16px;
+            transition: background 0.25s, border-color 0.25s, transform 0.25s;
+        }
+
+        .c-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(42,159,214,0.2);
+            transform: translateY(-3px);
+        }
+
+        .c-icon {
+            width: 40px; height: 40px; border-radius: 9px;
+            background: rgba(42,159,214,0.1);
+            border: 1px solid rgba(42,159,214,0.17);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .c-icon svg { width: 18px; height: 18px; stroke: var(--blue); }
+
+        .c-lbl {
+            font-size: 0.66rem; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: rgba(255,255,255,0.28); margin-bottom: 6px;
+        }
+
+        .c-val {
+            font-size: 0.9rem; font-weight: 600;
+            color: var(--white); word-break: break-word;
+        }
+
+        .c-val a { color: inherit; text-decoration: none; transition: color 0.2s; }
+        .c-val a:hover { color: var(--blue); }
+
+        /* ══ FORM ══ */
+        #contact-form { background: var(--surface); }
+
+        .form-outer { max-width: 700px; margin: 0 auto; }
+        .form-outer .eyebrow,
+        .form-outer .sec-title,
+        .form-outer .sec-sub { text-align: center; }
+        .form-outer .sec-sub { margin: 0 auto 44px; }
+
+        .form-shell {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px; padding: 48px 44px;
+            box-shadow: 0 4px 40px rgba(0,0,0,0.052);
+        }
+
+        .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        .fg { display: flex; flex-direction: column; gap: 8px; }
+        .fg.full { grid-column: 1/-1; }
+
+        .fg label {
+            font-size: 0.7rem; font-weight: 700;
+            color: #555; letter-spacing: 0.1em; text-transform: uppercase;
+        }
+
+        .fg input, .fg select, .fg textarea {
+            width: 100%; padding: 13px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px; font-size: 0.92rem;
+            font-family: inherit; color: var(--dark);
+            background: var(--white);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none; appearance: none;
+        }
+
+        .fg input::placeholder, .fg textarea::placeholder { color: #c5c7ce; }
+
+        .fg input:focus, .fg select:focus, .fg textarea:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(42,159,214,0.1);
+        }
+
+        .fg textarea { resize: vertical; min-height: 116px; }
+
+        .fg select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 14px center;
+            padding-right: 40px; cursor: pointer;
+        }
+
+        .form-ft { margin-top: 28px; text-align: center; }
+
+        .form-ft button {
+            background: var(--orange); color: var(--white); border: none;
+            padding: 15px 56px; border-radius: 6px;
+            font-size: 0.82rem; font-weight: 700;
+            letter-spacing: 0.09em; text-transform: uppercase;
+            cursor: pointer; font-family: inherit;
+            transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(212,82,26,0.28);
+        }
+
+        .form-ft button:hover {
+            background: #bf4a16; transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212,82,26,0.44);
+        }
+
+        .form-note {
+            margin-top: 15px; font-size: 0.74rem; color: #bbb;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        .form-note svg { width: 12px; height: 12px; stroke: #ccc; flex-shrink: 0; }
+
+        /* ══ WA FLOAT ══ */
+        .wa-float {
+            position: fixed; bottom: 28px; right: 28px; z-index: 999;
+            width: 54px; height: 54px; background: #25d366; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 22px rgba(37,211,102,0.5); text-decoration: none;
+            transition: transform 0.22s cubic-bezier(.22,.61,.36,1), box-shadow 0.22s;
+        }
+
+        .wa-float:hover {
+            transform: scale(1.12);
+            box-shadow: 0 8px 32px rgba(37,211,102,0.65);
+        }
+
+        .wa-float svg { width: 27px; height: 27px; fill: #fff; }
+
+        /* ══ FOOTER ══ */
+        footer {
+            background: #060708;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-in {
+            max-width: 1160px; margin: 0 auto;
+            padding: 44px 56px;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            gap: 24px; flex-wrap: wrap;
+        }
+
+        .f-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.92rem; font-weight: 700;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.07em; text-transform: uppercase;
+        }
+
+        .f-brand em { font-style: normal; color: var(--orange); }
+
+        .f-ceo {
+            margin-top: 6px; font-size: 0.72rem;
+            color: rgba(255,255,255,0.22); font-weight: 400;
+        }
+
+        .f-copy { font-size: 0.78rem; color: rgba(255,255,255,0.18); }
+
+        .f-links { display: flex; gap: 28px; }
+
+        .f-links a {
+            color: rgba(255,255,255,0.22); font-size: 0.78rem;
+            font-weight: 500; text-decoration: none;
+            text-transform: uppercase; letter-spacing: 0.07em;
+            transition: color 0.2s;
+        }
+
+        .f-links a:hover { color: var(--blue); }
+
+        /* ══ REVEAL ══ */
+        .reveal {
+            opacity: 0; transform: translateY(22px);
+            transition: opacity 0.68s ease, transform 0.68s ease;
+        }
+
+        .reveal.in { opacity: 1; transform: none; }
+        .d1 { transition-delay: 0.08s; }
+        .d2 { transition-delay: 0.17s; }
+        .d3 { transition-delay: 0.26s; }
+        .d4 { transition-delay: 0.35s; }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width: 1024px) {
+            .svc-grid { grid-template-columns: 1fr 1fr; }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 900px) {
+            .c-grid { grid-template-columns: 1fr; }
+            .about-inner { flex-direction: column; gap: 52px; }
+            .about-stats { width: 100%; grid-template-columns: repeat(4,1fr); }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; height: 60px; }
+            .nav-right { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { top: 60px; }
+            .wrap { padding: 72px 24px; }
+            #hero { padding: 108px 20px 80px; }
+            .hero-bracket-tl, .hero-bracket-br,
+            .hero-dots, .hero-line, .hero-line2 { display: none; }
+            .hero-ctas { flex-direction: column; align-items: center; }
+            .btn-primary, .btn-wa, .btn-ghost {
+                width: 100%; max-width: 320px; justify-content: center;
+            }
+            .trust-inner { grid-template-columns: 1fr; }
+            .trust-item {
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+                padding: 22px 24px;
+            }
+            .trust-item:last-child { border-bottom: none; }
+            .about-stats { grid-template-columns: 1fr 1fr; }
+            .c-head { flex-direction: column; }
+            .form-shell { padding: 30px 22px; }
+            .fgrid { grid-template-columns: 1fr; }
+            .footer-in { flex-direction: column; align-items: flex-start; gap: 26px; padding: 32px 24px; }
+        }
+
+        @media (max-width: 520px) {
+            .svc-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr; }
+            .about-stats { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Initializing site...</h1>
+
+    <!-- NAVBAR -->
+    <nav>
+        <a href="#hero" class="nav-brand">
+            <span class="brand-mark"><em>M</em>ARKBIS</span>
+            <span class="brand-sep"></span>
+            <span class="brand-sub">Multiservice</span>
+        </a>
+        <div class="nav-right">
+            <ul>
+                <li><a href="#services" data-i18n="nav_services">Servicios</a></li>
+                <li><a href="#why" data-i18n="nav_why">¿Por qué nosotros?</a></li>
+                <li><a href="#about-section" data-i18n="nav_about">Nosotros</a></li>
+                <li><a href="#contact" data-i18n="nav_contact">Contacto</a></li>
+            </ul>
+            <div class="lang-toggle">
+                <button class="lang-btn active" onclick="setLang('es')">ES</button>
+                <button class="lang-btn" onclick="setLang('en')">EN</button>
+            </div>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#services" data-i18n="nav_services" onclick="closeMenu()">Servicios</a>
+        <a href="#why" data-i18n="nav_why" onclick="closeMenu()">¿Por qué nosotros?</a>
+        <a href="#about-section" data-i18n="nav_about" onclick="closeMenu()">Nosotros</a>
+        <a href="#contact" data-i18n="nav_contact" onclick="closeMenu()">Contacto</a>
+        <div class="mobile-lang">
+            <button class="lang-btn active" onclick="setLang('es');closeMenu()">ES</button>
+            <button class="lang-btn" onclick="setLang('en');closeMenu()">EN</button>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-glow-b"></div>
+        <div class="hero-glow-o"></div>
+        <div class="hero-line"></div>
+        <div class="hero-line2"></div>
+        <div class="hero-bracket-tl"></div>
+        <div class="hero-bracket-br"></div>
+        <div class="hero-dots" id="hdots"></div>
+
+        <div class="hero-inner">
+            <div class="hero-tag">
+                <span class="tag-dot"></span>
+                <span data-i18n="hero_tag">Santo Domingo · República Dominicana</span>
+            </div>
+            <h1 class="hero-h1" data-i18n="hero_title">Ingeniería eléctrica<br>e industrial <span class="accent">de alto nivel</span></h1>
+            <div class="hero-divider"></div>
+            <p class="hero-sub" data-i18n="hero_sub">Soluciones técnicas precisas en electricidad, climatización y mantenimiento para empresas que no admiten fallos.</p>
+            <div class="hero-ctas">
+                <a href="#contact-form" class="btn-primary" data-i18n="hero_cta1">Solicitar servicio</a>
+                <a href="https://wa.me/18092148815" target="_blank" rel="noopener" class="btn-wa">
+                    <svg viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.824.738 5.476 2.027 7.782L0 32l8.418-2.004A15.938 15.938 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.773-1.848l-.486-.289-5.002 1.191 1.212-4.87-.317-.5A13.241 13.241 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.293-.365-.133-.63-.199-.895.199-.266.398-1.029 1.293-1.261 1.559-.232.266-.465.299-.863.1-.398-.199-1.681-.619-3.203-1.977-1.184-1.057-1.983-2.362-2.215-2.76-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.199-.232.266-.398.398-.664.133-.266.066-.498-.033-.697-.1-.199-.895-2.157-1.227-2.953-.323-.775-.651-.67-.895-.682l-.763-.013c-.266 0-.697.1-1.062.498-.365.398-1.393 1.361-1.393 3.318s1.427 3.849 1.626 4.115c.199.266 2.808 4.287 6.803 6.016.951.41 1.693.655 2.271.838.954.303 1.823.26 2.51.158.766-.114 2.353-.962 2.685-1.891.332-.929.332-1.725.232-1.891-.099-.166-.365-.266-.763-.465z"/></svg>
+                    <span data-i18n="hero_cta_wa">WhatsApp</span>
+                </a>
+                <a href="#services" class="btn-ghost" data-i18n="hero_cta2">Ver servicios</a>
+            </div>
+            <p class="hero-trust">
+                <span class="ht-sep"></span>
+                <span data-i18n="hero_trust">Atención profesional en Santo Domingo</span>
+                <span class="ht-sep"></span>
+            </p>
+        </div>
+    </section>
+
+    <!-- TRUST STRIP -->
+    <div id="trust-strip">
+        <div class="trust-inner">
+            <div class="trust-item reveal">
+                <div class="t-icon or">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#d4521a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <div class="t-text">
+                    <strong data-i18n="trust1_title">Respuesta rápida</strong>
+                    <span data-i18n="trust1_sub">Atendemos emergencias 24 horas al día</span>
+                </div>
+            </div>
+            <div class="trust-item reveal d1">
+                <div class="t-icon bl">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#2a9fd6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                    </svg>
+                </div>
+                <div class="t-text">
+                    <strong data-i18n="trust2_title">Cobertura en Santo Domingo</strong>
+                    <span data-i18n="trust2_sub">Proyectos residenciales, comerciales e industriales</span>
+                </div>
+            </div>
+            <div class="trust-item reveal d2">
+                <div class="t-icon or">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#d4521a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                </div>
+                <div class="t-text">
+                    <strong data-i18n="trust3_title">Electricidad · Refrigeración · Mantenimiento</strong>
+                    <span data-i18n="trust3_sub">Una empresa. Todo lo que necesitas.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section id="services">
+        <div class="wrap">
+            <div class="svc-head reveal">
+                <p class="eyebrow" data-i18n="services_label">Lo que hacemos</p>
+                <h2 class="sec-title" data-i18n="services_title">Nuestros Servicios</h2>
+                <p class="sec-sub" data-i18n="services_sub">Soluciones técnicas especializadas con personal certificado y garantía de resultado en cada intervención.</p>
+            </div>
+            <div class="svc-grid">
+                <div class="svc-card reveal d1">
+                    <p class="svc-num">01</p>
+                    <div class="svc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#d4521a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="s1_title">Instalaciones Eléctricas</h3>
+                    <p data-i18n="s1_desc">Diseño, instalación y mantenimiento de sistemas eléctricos residenciales, comerciales e industriales con altos estándares de seguridad.</p>
+                </div>
+                <div class="svc-card reveal d2">
+                    <p class="svc-num">02</p>
+                    <div class="svc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#2a9fd6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="2" x2="12" y2="22"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <line x1="5" y1="5" x2="19" y2="19"/>
+                            <line x1="19" y1="5" x2="5" y2="19"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="s2_title">Climatización y Refrigeración</h3>
+                    <p data-i18n="s2_desc">Instalación y mantenimiento de aires acondicionados, sistemas de refrigeración industrial y cuartos fríos de alta eficiencia.</p>
+                </div>
+                <div class="svc-card reveal d3">
+                    <p class="svc-num">03</p>
+                    <div class="svc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="s3_title">Mantenimiento Industrial</h3>
+                    <p data-i18n="s3_desc">Planes de mantenimiento preventivo y correctivo para minimizar el tiempo de inactividad y extender la vida útil de sus equipos.</p>
+                </div>
+                <div class="svc-card reveal d4">
+                    <p class="svc-num">04</p>
+                    <div class="svc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#2a9fd6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="s4_title">Reparaciones Generales</h3>
+                    <p data-i18n="s4_desc">Diagnóstico preciso y reparación de equipos eléctricos y mecánicos con garantía sobre cada trabajo realizado.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section id="why">
+        <div class="why-glow"></div>
+        <div class="wrap">
+            <div class="why-head reveal">
+                <p class="eyebrow dim" data-i18n="why_label">Por qué elegirnos</p>
+                <h2 class="sec-title" data-i18n="why_title">Construidos para la excelencia técnica</h2>
+                <p class="sec-sub" data-i18n="why_sub">No somos un proveedor más. Somos el equipo que su operación necesita cuando el trabajo tiene que salir bien.</p>
+            </div>
+            <div class="why-grid">
+                <div class="why-card reveal d1">
+                    <div class="why-num">01</div>
+                    <div class="why-icon or">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#d4521a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="why1_title">Equipo certificado</h3>
+                    <p data-i18n="why1_desc">Técnicos con formación especializada y experiencia comprobada en proyectos eléctricos e industriales de toda escala.</p>
+                </div>
+                <div class="why-card reveal d2">
+                    <div class="why-num">02</div>
+                    <div class="why-icon bl">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#2a9fd6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="why2_title">Disponibilidad 24/7</h3>
+                    <p data-i18n="why2_desc">Servicio de emergencia disponible todos los días del año. Respondemos cuando más lo necesita, sin excusas.</p>
+                </div>
+                <div class="why-card reveal d3">
+                    <div class="why-num">03</div>
+                    <div class="why-icon or">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#d4521a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="why3_title">Garantía de resultado</h3>
+                    <p data-i18n="why3_desc">Cada trabajo entregado lleva nuestra garantía. Si no está correcto, volvemos a hacerlo. Así de simple.</p>
+                </div>
+                <div class="why-card reveal d4">
+                    <div class="why-num">04</div>
+                    <div class="why-icon bl">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#2a9fd6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"/>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="why4_title">Presupuesto transparente</h3>
+                    <p data-i18n="why4_desc">Cotizamos claro, ejecutamos según lo acordado. Sin sorpresas en costos ni en plazos de entrega.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about-section">
+        <div class="wrap">
+            <div class="about-inner">
+                <div class="about-text reveal">
+                    <p class="eyebrow" data-i18n="about_label">Quiénes somos</p>
+                    <h2 class="sec-title" data-i18n="about_title">Más de una década<br>construyendo confianza</h2>
+                    <p class="sec-sub" data-i18n="about_p1">Markbis Multiservice, S.R.L. es una empresa dominicana con más de 10 años especializándose en soluciones eléctricas, climatización y mantenimiento industrial. Nuestro equipo técnico certificado garantiza calidad, seguridad y cumplimiento en cada proyecto.</p>
+                    <p class="body2" data-i18n="about_p2">Atendemos clientes residenciales, comerciales e industriales en todo el territorio nacional con los más altos estándares técnicos y compromiso total.</p>
+                    <div class="about-ceo">
+                        <div class="ceo-av">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                        <div class="ceo-info">
+                            <strong data-i18n="about_ceo">Ing. Bismack González</strong>
+                            <span data-i18n="about_ceo_role">Fundador &amp; Director General</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-stats reveal d2">
+                    <div class="stat-box">
+                        <span class="num">10+</span>
+                        <span class="lbl" data-i18n="stat1">Años de experiencia</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="num">500+</span>
+                        <span class="lbl" data-i18n="stat2">Proyectos completados</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="num">100%</span>
+                        <span class="lbl" data-i18n="stat3">Satisfacción garantizada</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="num">24/7</span>
+                        <span class="lbl" data-i18n="stat4">Servicio de emergencia</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT INFO -->
+    <section id="contact">
+        <div class="c-glow"></div>
+        <div class="wrap">
+            <div class="c-head reveal">
+                <div>
+                    <p class="eyebrow bl" data-i18n="contact_label">Estamos aquí</p>
+                    <h2 class="sec-title" data-i18n="contact_title">Contáctanos</h2>
+                </div>
+                <p class="sec-sub" style="max-width:360px;" data-i18n="contact_sub">¿Tienes un proyecto? Escríbenos o llámanos. Respondemos con rapidez y profesionalismo.</p>
+            </div>
+            <div class="c-grid">
+                <div class="c-card reveal d1">
+                    <div class="c-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="c-lbl" data-i18n="ci_phone_label">Teléfono</p>
+                        <p class="c-val"><a href="tel:+18092148815">+1 809-214-8815</a></p>
+                    </div>
+                </div>
+                <div class="c-card reveal d2">
+                    <div class="c-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="c-lbl" data-i18n="ci_email_label">Correo</p>
+                        <p class="c-val"><a href="mailto:markbismultiservice@gmail.com">markbismultiservice@gmail.com</a></p>
+                    </div>
+                </div>
+                <div class="c-card reveal d3">
+                    <div class="c-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="c-lbl" data-i18n="ci_location_label">Ubicación</p>
+                        <p class="c-val" data-i18n="ci_location_val">Santo Domingo, R.D.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section id="contact-form">
+        <div class="wrap">
+            <div class="form-outer">
+                <p class="eyebrow" data-i18n="form_label">Solicitud de servicio</p>
+                <h2 class="sec-title" data-i18n="form_title">Envíanos tu solicitud</h2>
+                <p class="sec-sub" data-i18n="form_sub">Cuéntanos lo que necesitas y te contactamos en el menor tiempo posible.</p>
+                <div class="form-shell reveal">
+                    <form onsubmit="return false;">
+                        <div class="fgrid">
+                            <div class="fg">
+                                <label for="fn" data-i18n="form_name_label">Nombre completo</label>
+                                <input type="text" id="fn" placeholder="Juan Pérez" data-i18n-placeholder="form_name_ph">
+                            </div>
+                            <div class="fg">
+                                <label for="fp" data-i18n="form_phone_label">Teléfono</label>
+                                <input type="tel" id="fp" placeholder="+1 809-000-0000" data-i18n-placeholder="form_phone_ph">
+                            </div>
+                            <div class="fg full">
+                                <label for="fs" data-i18n="form_service_label">Servicio requerido</label>
+                                <select id="fs">
+                                    <option value="" data-i18n="form_service_default">-- Selecciona un servicio --</option>
+                                    <option value="electrical" data-i18n="form_opt1">Instalaciones Eléctricas</option>
+                                    <option value="ac" data-i18n="form_opt2">Climatización y Refrigeración</option>
+                                    <option value="industrial" data-i18n="form_opt3">Mantenimiento Industrial</option>
+                                    <option value="repairs" data-i18n="form_opt4">Reparaciones Generales</option>
+                                    <option value="other" data-i18n="form_opt5">Otro</option>
+                                </select>
+                            </div>
+                            <div class="fg full">
+                                <label for="fm" data-i18n="form_msg_label">Mensaje</label>
+                                <textarea id="fm" placeholder="Describe brevemente tu necesidad..." data-i18n-placeholder="form_msg_ph"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-ft">
+                            <button type="submit" data-i18n="form_btn">Enviar solicitud</button>
+                            <p class="form-note">
+                                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="12" y1="8" x2="12" y2="12"/>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                </svg>
+                                <span data-i18n="form_demo_note">Formulario de demostración. Pronto estará conectado.</span>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-in">
+            <div>
+                <div class="f-brand"><em>M</em>ARKBIS MULTISERVICE</div>
+                <p class="f-ceo" data-i18n="footer_ceo">Dirigido por el Ing. Bismack González</p>
+            </div>
+            <p class="f-copy" data-i18n="footer_copy">&copy; 2026 Markbis Multiservice, S.R.L. Todos los derechos reservados.</p>
+            <div class="f-links">
+                <a href="#services" data-i18n="nav_services">Servicios</a>
+                <a href="#why" data-i18n="nav_why">Nosotros</a>
+                <a href="#contact" data-i18n="nav_contact">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP -->
+    <a class="wa-float" href="https://wa.me/18092148815" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.824.738 5.476 2.027 7.782L0 32l8.418-2.004A15.938 15.938 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.773-1.848l-.486-.289-5.002 1.191 1.212-4.87-.317-.5A13.241 13.241 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.293-.365-.133-.63-.199-.895.199-.266.398-1.029 1.293-1.261 1.559-.232.266-.465.299-.863.1-.398-.199-1.681-.619-3.203-1.977-1.184-1.057-1.983-2.362-2.215-2.76-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.199-.232.266-.398.398-.664.133-.266.066-.498-.033-.697-.1-.199-.895-2.157-1.227-2.953-.323-.775-.651-.67-.895-.682l-.763-.013c-.266 0-.697.1-1.062.498-.365.398-1.393 1.361-1.393 3.318s1.427 3.849 1.626 4.115c.199.266 2.808 4.287 6.803 6.016.951.41 1.693.655 2.271.838.954.303 1.823.26 2.51.158.766-.114 2.353-.962 2.685-1.891.332-.929.332-1.725.232-1.891-.099-.166-.365-.266-.763-.465z"/></svg>
+    </a>
+
+    <script>
+        /* Dot grid */
+        const hd = document.getElementById('hdots');
+        if (hd) for (let i = 0; i < 25; i++) hd.appendChild(document.createElement('span'));
+
+        /* Hamburger */
+        function toggleMenu() {
+            const m = document.getElementById('mobile-menu');
+            const b = document.getElementById('hamburger');
+            b.classList.toggle('open', m.classList.toggle('open'));
+        }
+
+        function closeMenu() {
+            document.getElementById('mobile-menu').classList.remove('open');
+            document.getElementById('hamburger').classList.remove('open');
+        }
+
+        /* Reveal */
+        const ro = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+        /* i18n */
+        const T = {
+            es: {
+                nav_services:'Servicios', nav_why:'¿Por qué nosotros?', nav_about:'Nosotros', nav_contact:'Contacto',
+                hero_tag:'Santo Domingo · República Dominicana',
+                hero_title:'Ingeniería eléctrica<br>e industrial <span class="accent">de alto nivel</span>',
+                hero_sub:'Soluciones técnicas precisas en electricidad, climatización y mantenimiento para empresas que no admiten fallos.',
+                hero_cta1:'Solicitar servicio', hero_cta_wa:'WhatsApp', hero_cta2:'Ver servicios',
+                hero_trust:'Atención profesional en Santo Domingo',
+                trust1_title:'Respuesta rápida', trust1_sub:'Atendemos emergencias 24 horas al día',
+                trust2_title:'Cobertura en Santo Domingo', trust2_sub:'Proyectos residenciales, comerciales e industriales',
+                trust3_title:'Electricidad · Refrigeración · Mantenimiento', trust3_sub:'Una empresa. Todo lo que necesitas.',
+                services_label:'Lo que hacemos', services_title:'Nuestros Servicios',
+                services_sub:'Soluciones técnicas especializadas con personal certificado y garantía de resultado en cada intervención.',
+                s1_title:'Instalaciones Eléctricas', s1_desc:'Diseño, instalación y mantenimiento de sistemas eléctricos residenciales, comerciales e industriales con altos estándares de seguridad.',
+                s2_title:'Climatización y Refrigeración', s2_desc:'Instalación y mantenimiento de aires acondicionados, sistemas de refrigeración industrial y cuartos fríos de alta eficiencia.',
+                s3_title:'Mantenimiento Industrial', s3_desc:'Planes de mantenimiento preventivo y correctivo para minimizar el tiempo de inactividad y extender la vida útil de sus equipos.',
+                s4_title:'Reparaciones Generales', s4_desc:'Diagnóstico preciso y reparación de equipos eléctricos y mecánicos con garantía sobre cada trabajo realizado.',
+                why_label:'Por qué elegirnos', why_title:'Construidos para la excelencia técnica',
+                why_sub:'No somos un proveedor más. Somos el equipo que su operación necesita cuando el trabajo tiene que salir bien.',
+                why1_title:'Equipo certificado', why1_desc:'Técnicos con formación especializada y experiencia comprobada en proyectos eléctricos e industriales de toda escala.',
+                why2_title:'Disponibilidad 24/7', why2_desc:'Servicio de emergencia disponible todos los días del año. Respondemos cuando más lo necesita, sin excusas.',
+                why3_title:'Garantía de resultado', why3_desc:'Cada trabajo entregado lleva nuestra garantía. Si no está correcto, volvemos a hacerlo. Así de simple.',
+                why4_title:'Presupuesto transparente', why4_desc:'Cotizamos claro, ejecutamos según lo acordado. Sin sorpresas en costos ni en plazos de entrega.',
+                about_label:'Quiénes somos', about_title:'Más de una década<br>construyendo confianza',
+                about_p1:'Markbis Multiservice, S.R.L. es una empresa dominicana con más de 10 años especializándose en soluciones eléctricas, climatización y mantenimiento industrial. Nuestro equipo técnico certificado garantiza calidad, seguridad y cumplimiento en cada proyecto.',
+                about_p2:'Atendemos clientes residenciales, comerciales e industriales en todo el territorio nacional con los más altos estándares técnicos y compromiso total.',
+                about_ceo:'Ing. Bismack González', about_ceo_role:'Fundador &amp; Director General',
+                stat1:'Años de experiencia', stat2:'Proyectos completados', stat3:'Satisfacción garantizada', stat4:'Servicio de emergencia',
+                contact_label:'Estamos aquí', contact_title:'Contáctanos',
+                contact_sub:'¿Tienes un proyecto? Escríbenos o llámanos. Respondemos con rapidez y profesionalismo.',
+                ci_phone_label:'Teléfono', ci_email_label:'Correo', ci_location_label:'Ubicación', ci_location_val:'Santo Domingo, R.D.',
+                form_label:'Solicitud de servicio', form_title:'Envíanos tu solicitud',
+                form_sub:'Cuéntanos lo que necesitas y te contactamos en el menor tiempo posible.',
+                form_name_label:'Nombre completo', form_name_ph:'Juan Pérez',
+                form_phone_label:'Teléfono', form_phone_ph:'+1 809-000-0000',
+                form_service_label:'Servicio requerido', form_service_default:'-- Selecciona un servicio --',
+                form_opt1:'Instalaciones Eléctricas', form_opt2:'Climatización y Refrigeración',
+                form_opt3:'Mantenimiento Industrial', form_opt4:'Reparaciones Generales', form_opt5:'Otro',
+                form_msg_label:'Mensaje', form_msg_ph:'Describe brevemente tu necesidad...',
+                form_btn:'Enviar solicitud', form_demo_note:'Formulario de demostración. Pronto estará conectado.',
+                footer_ceo:'Dirigido por el Ing. Bismack González',
+                footer_copy:'© 2026 Markbis Multiservice, S.R.L. Todos los derechos reservados.',
+            },
+            en: {
+                nav_services:'Services', nav_why:'Why us?', nav_about:'About', nav_contact:'Contact',
+                hero_tag:'Santo Domingo · Dominican Republic',
+                hero_title:'High-level electrical<br>and industrial <span class="accent">engineering</span>',
+                hero_sub:'Precise technical solutions in electrical work, HVAC, and industrial maintenance for operations that cannot afford to fail.',
+                hero_cta1:'Request service', hero_cta_wa:'WhatsApp', hero_cta2:'Our services',
+                hero_trust:'Professional service across Santo Domingo',
+                trust1_title:'Fast response', trust1_sub:'We handle emergencies 24 hours a day',
+                trust2_title:'Coverage in Santo Domingo', trust2_sub:'Residential, commercial & industrial projects',
+                trust3_title:'Electrical · Refrigeration · Maintenance', trust3_sub:'One company. Everything you need.',
+                services_label:'What we do', services_title:'Our Services',
+                services_sub:'Specialized technical solutions with certified personnel and a result guarantee on every job.',
+                s1_title:'Electrical Installations', s1_desc:'Design, installation and maintenance of residential, commercial, and industrial electrical systems to the highest safety standards.',
+                s2_title:'HVAC & Refrigeration', s2_desc:'Installation and maintenance of air conditioning, industrial refrigeration systems, and high-efficiency cold rooms.',
+                s3_title:'Industrial Maintenance', s3_desc:'Preventive and corrective maintenance plans to minimize downtime and extend the service life of your equipment.',
+                s4_title:'General Repairs', s4_desc:'Accurate diagnosis and repair of electrical and mechanical equipment with a warranty on every job performed.',
+                why_label:'Why choose us', why_title:'Built for technical excellence',
+                why_sub:"We're not just another vendor. We're the team your operation needs when the job has to be done right.",
+                why1_title:'Certified team', why1_desc:'Technicians with specialized training and proven experience across electrical and industrial projects of every scale.',
+                why2_title:'24/7 availability', why2_desc:'Emergency service available every day of the year. We respond when you need it most, no excuses.',
+                why3_title:'Guaranteed results', why3_desc:"Every job we deliver carries our guarantee. If it's not right, we come back and fix it. Simple as that.",
+                why4_title:'Transparent pricing', why4_desc:'We quote clearly and deliver as agreed. No surprises in cost or delivery timelines.',
+                about_label:'Who we are', about_title:'Over a decade<br>of building trust',
+                about_p1:'Markbis Multiservice, S.R.L. is a Dominican company with over 10 years specializing in electrical solutions, HVAC, and industrial maintenance. Our certified technical team guarantees quality, safety, and compliance on every project.',
+                about_p2:'We serve residential, commercial, and industrial clients nationwide with the highest technical standards and full commitment.',
+                about_ceo:'Eng. Bismack González', about_ceo_role:'Founder &amp; CEO',
+                stat1:'Years of experience', stat2:'Completed projects', stat3:'Satisfaction guaranteed', stat4:'Emergency service',
+                contact_label:'We are here', contact_title:'Contact Us',
+                contact_sub:'Have a project? Write or call us. We respond quickly and professionally.',
+                ci_phone_label:'Phone', ci_email_label:'Email', ci_location_label:'Location', ci_location_val:'Santo Domingo, D.R.',
+                form_label:'Service request', form_title:'Send us your request',
+                form_sub:'Tell us what you need and we will get back to you as soon as possible.',
+                form_name_label:'Full name', form_name_ph:'John Doe',
+                form_phone_label:'Phone', form_phone_ph:'+1 809-000-0000',
+                form_service_label:'Required service', form_service_default:'-- Select a service --',
+                form_opt1:'Electrical Installations', form_opt2:'HVAC & Refrigeration',
+                form_opt3:'Industrial Maintenance', form_opt4:'General Repairs', form_opt5:'Other',
+                form_msg_label:'Message', form_msg_ph:'Briefly describe your need...',
+                form_btn:'Send request', form_demo_note:'Demo form. It will be connected soon.',
+                footer_ceo:'Led by Eng. Bismack González',
+                footer_copy:'© 2026 Markbis Multiservice, S.R.L. All rights reserved.',
+            }
+        };
+
+        function setLang(l) {
+            const t = T[l];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const k = el.getAttribute('data-i18n');
+                if (t[k] !== undefined) el.innerHTML = t[k];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const k = el.getAttribute('data-i18n-placeholder');
+                if (t[k] !== undefined) el.placeholder = t[k];
+            });
+            document.documentElement.lang = l;
+            document.querySelectorAll('.lang-btn').forEach(b => {
+                b.classList.toggle('active', b.textContent.trim() === l.toUpperCase());
+            });
+        }
+    </script>
+
 </body>
 </html>
